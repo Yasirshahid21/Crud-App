@@ -1,0 +1,10 @@
+
+/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+.menu ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+}
+.menu ul li {
+    padding: 20px;
+}
