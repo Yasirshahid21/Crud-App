@@ -1,7 +1,7 @@
 @include ('partials.head')
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand col-md-4" href="#"><img src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24"></a>
+    <a class="navbar-brand col-md-4" href="#"><img src="asset('images/app-logo.png')" alt="" width="30" height="24"></a>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       @guest
       <div class="navbar-nav">

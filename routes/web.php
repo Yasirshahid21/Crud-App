@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\CourseController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +34,7 @@ Route::controller(AuthController::class)->group( function() {
     Route::get('logout','logout')->name('logout');
 });
 Route::get('search',[SearchController::class,'search'])->name('search');
+Route::get('courses',[CourseController::class,'retrive'])->name('courses');
 // Route::group(['middleware'=>['auth']], function() {
 //     Route::get('login',[AuthController::class,'index'])->name('login');
 //     Route::get('register',[AuthController::class,])->name('register');

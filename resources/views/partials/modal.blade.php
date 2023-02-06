@@ -32,18 +32,15 @@
                 <input type="text" name="phone" class="form-control" id="adress" value="{{old('phone')}}">
                 <span class="text-danger">@error('phone'){{$message}}@enderror</span>
             </div>
-            <!-- <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="course" value="PHP Crash Cuorse" id="flexCheckDefault">
+            <span class="text-danger">@error('course'){{$message}}@enderror</span>
+            @foreach($courses as $course)
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="course[]" value="{{$course->id}}" id="flexCheckDefault">
                 <label class="form-check-label" for="flexCheckDefault">
-                    PHP Crash Cuorse
+                    {{$course->name}}
                 </label>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="course" value="Laravel Crash Cuorse" id="flexCheckChecked" checked>
-                <label class="form-check-label" for="flexCheckChecked">
-                Laravel Crash Cuorse 
-                </label>
-            </div> -->
+            @endforeach
             <div class="mt-3">
             <input type="submit" name="submit" class="btn btn-primary" value="Save changes">
             </div>

@@ -8,7 +8,7 @@
       <form class="ml-1" style="float:right;" action="{{route('search')}}" method="get">
       <div class="input-group">
         <div class="form-outline">
-          <input type="search" name="search" id="form1" class="form-control" placeholder="Search" value="{{old('name')}}" />
+          <input type="search" name="search" id="form1" class="form-control" placeholder="Search" value="{{old('search')}}" />
         </div>
         <button type="submit" class="btn btn-primary">
         <i class="fa fa-search"></i>
@@ -47,6 +47,7 @@
             <th scope="col">Email</th>
             <th scope="col">Address</th>
             <th scope="col">Phone</th>
+            <th scope="col">Courses</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -58,6 +59,9 @@
             <td>{{$user->email}}</td>
             <td>{{$user->address}}</td>
             <td>{{$user->phone}}</td>
+            <td>@foreach($user->courses as $course)
+            {{$course->name . ','}}
+              @endforeach</td>
             <td class="d-flex">
             <a href="{{route('student.edit', $user->id)}}" class="btn btn-primary btn-xs">Edit</a>
             <form class="ml-1" action="{{route ('student.destroy', $user->id)}}" method="post">

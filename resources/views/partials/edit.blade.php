@@ -24,18 +24,15 @@
                     <label for="adress" class="form-label">Phone</label>
                     <input type="text" name="phone" value="{{$students->phone}}" class="form-control" id="adress" aria-describedby="emailHelp">
                 </div>
-                <!-- <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="course" value="PHP Crash Cuorse" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
-                        PHP Crash Cuorse
+            @foreach($data as $course)
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="courses[]" value="{{$course->id}}"
+                    @if (count($students->courses->where('id', $course->id))) checked @endif>                
+                    <label class="form-check-label" for="flexCheckChecked">
+                    {{$course->name}}
                     </label>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="course" value="Laravel Crash Cuorse" id="flexCheckChecked" checked>
-                    <label class="form-check-label" for="flexCheckChecked">
-                    Laravel Crash Cuorse 
-                    </label>
-                </div> -->
+            @endforeach
                 <div class="mt-3">
                 <input type="submit" name="submit" class="btn btn-primary" value="Update">
                 </div>
