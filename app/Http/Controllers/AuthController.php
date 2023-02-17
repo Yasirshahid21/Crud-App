@@ -46,7 +46,11 @@ class AuthController extends Controller
         $credentails = $request->only('email', 'password');
         // dd($credentails);
         if(Auth::attempt($credentails)) {
-            // $id = Auth::user()->id;
+            // dd(auth()->user()->is_admin);
+            // if(auth()->user()->is_admin == 1){
+            // return redirect('admin/users')->with('success', 'Login Successfully');
+                
+            // }
             // return redirect()->route('student.index', ['user_id'=> $id]);
             return redirect('dashboard')->with('success', 'Login Successfully');
             // $user = auth()->user();
@@ -58,6 +62,9 @@ class AuthController extends Controller
     }
     Public function dashboard() {
         if(Auth::check()) {
+         if(auth()->user()->is_admin == 1){
+             return redirect('admin/users')->with('success', 'Login Successfully');                   
+             }
             return redirect('student');
         }
         return redirect('login')->with('fail', 'Your not allowed');
