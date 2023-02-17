@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use  App\Models\Course;
+use Spatie\Permission\Models\Role;
 
-class CourseSeeder extends Seeder
+class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,15 +16,14 @@ class CourseSeeder extends Seeder
     public function run()
     {
         //
-        $courses = [
-            'React js',
-            'Laravel',
-            'Dot Net',
-            'Angular'
+        $roles = [
+            'admin',
+            'student',
+            'teacher'
          ];
       
-         foreach ($courses as $course) {
-              Course::create(['name' => $course ]);
+         foreach ($roles as $role) {
+              Role::create(['name' => $role]);
          }
     }
 }

@@ -19,11 +19,13 @@
       </div>
       </form>
     </div>
+    @can('student.create')
     <div class="col-md-2 py-4 text-right">
       <button type="button" class="btn btn-primary text-right" data-toggle="modal" data-target="#modal">
           Add New
           </button>
     </div>
+    @endcan
       @include('partials.modal')
   </div>
   @if(Session::get('success'))
@@ -51,7 +53,7 @@
             <th scope="col">Actions</th>
           </tr>
         </thead>
-        <tbody>         
+        <tbody>
           @foreach($students as $user)
           <tr>
             <th scope="row">{{$user->id}}</th>
@@ -63,12 +65,16 @@
             {{$course->name . ','}}
               @endforeach</td>
             <td class="d-flex">
+          @can('student.edit')
             <a href="{{route('student.edit', $user->id)}}" class="btn btn-primary btn-xs">Edit</a>
+            @endcan
+            @can('student.delete')
             <form class="ml-1" action="{{route ('student.destroy', $user->id)}}" method="post">
             @csrf @method('DELETE')
             <input type="hidden">
             <input type="submit" value="Delete" class="btn btn-danger btn-xs" />
             </form>
+          @endcan
             </td>
           </tr>
           @endforeach

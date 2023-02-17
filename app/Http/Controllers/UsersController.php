@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Spatie\Permission\Models\Permission;
 
 use App\Http\Requests\UserRequest;
 
-class usersController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +17,7 @@ class usersController extends Controller
     public function index()
     {
         $users= User::all();
-        return view('index', ['users'=>$users]);
+        return view('admin.users', compact('users'));
     }
 
     /**
@@ -35,7 +37,7 @@ class usersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(UserRequest $request)
-    { 
+    {
         // $validator= $request->validate(
         //         [
         //             'name' => 'required|string|max:255',
@@ -60,7 +62,7 @@ class usersController extends Controller
     $data = $request->validated();
         User::create($data);
         return redirect('/users')->with('success', 'Record added Successfully');
-        
+
     }
 
     /**
@@ -84,7 +86,8 @@ class usersController extends Controller
     public function edit(Request $request, $id)
     {
         $users= User::find($id);
-        return view('partials.edit', ['users'=>$users]);
+        $permissions = Permission::all();
+        return view('admin.users_edit', compact('users', 'permissions'));
 
     }
 
@@ -98,12 +101,12 @@ class usersController extends Controller
     public function update(Request $request, $id)
     {
         $users= User::find($id);
+        $permissions = $request->get('permission');
+        $users->syncPermissions($permissions);
         $users->name = $request->get('name');
         $users->email = $request->get('email');
-        $users->address = $request->get('address');
-        $users->phone = $request->get('phone');
         $users->update();
-        return redirect('/users')->with('success', 'Record Updated Successfully');
+        return redirect(route('user.index'))->with('success', 'Record Updated Successfully');
     }
 
     /**
@@ -116,6 +119,6 @@ class usersController extends Controller
     {
       $user= User::find($id);
       $user->delete();
-        return redirect('/users')->with('success','Delete user successfully');
+        return redirect(route('user.index'))->with('success','Delete user successfully');
     }
 }

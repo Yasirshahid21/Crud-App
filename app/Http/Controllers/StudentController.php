@@ -8,6 +8,8 @@ use App\Models\Course;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class StudentController extends Controller
 {
@@ -21,12 +23,30 @@ class StudentController extends Controller
         $user_id = Auth::user()->id;
         $students = User::find($user_id)->students;
         $courses = Course::get();
+        if(auth()->user()->hasRole('admin')){
+            $students = Student::all();
+            // dd($student->toArray());
+            return view('admin.student', compact('students', 'courses'));
+        }
+        return view('index', compact('students', 'courses'));
+        // $permissions[] = Permission::all();
+        // dd($permissions->toArray());
+        // $permissions = auth()->user()->hasAnyPermission(['view','create', 'delete', 'edit']);
+        // dd($permissions);
+        // if(Auth::user()->can('view')){
+        //     return view('index', Compact('students','courses'));
+        // }
+        // else
+        // abort('403');
+        // $permission = $students->hasAnyPermission(['edit', 'create', 'delete','view']);
+// dd($permission);
+        // $courses = Course::get();
         //  $students = Student::where('user_id', $user_id)->get();
-        return view('index', Compact('students','courses'));
+
         //  $students = Student::where('user_id', $user_id)->get();
         //  dd($students->toArray());
         // $students = User::find($user_id)->students;
-        // $students->name; 
+        // $students->name;
         // dd($courses->toArray());
         // foreach($students->courses()as $course){
         //     dd($course);
@@ -34,7 +54,7 @@ class StudentController extends Controller
         // $students= Student::with('User')->first();
         // dd($students->toArray());
         // return view('index', ['students'=>$students]);
-       
+
     }
 
     /**
@@ -54,8 +74,8 @@ class StudentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(UserRequest $request)
-    { 
-        $request->validated(); 
+    {
+        $request->validated();
         $student = Student::create($request->merge(['user_id' => Auth::user()->id])->all());
         $courses = $request->get('course');
         foreach($courses as $course){
@@ -67,7 +87,7 @@ class StudentController extends Controller
         }
         return redirect(route('student.index'))->with('success', 'Record added Successfully');
         // $student->course()->attach($student);
-        // $student_course->courses()->attach($courses); 
+        // $student_course->courses()->attach($courses);
         // dd(Auth()->user()->name);
         // dd(auth()->guest());
         // $validator= $request->validate(
@@ -94,7 +114,7 @@ class StudentController extends Controller
         // dd($students->user_id);
         // $students->save();
         // $data = $request->validated();
-        // Student::create($data);    
+        // Student::create($data);
     }
 
     /**
@@ -106,7 +126,7 @@ class StudentController extends Controller
     public function show($id)
     {
         //
-      
+
 
     }
 
@@ -119,12 +139,12 @@ class StudentController extends Controller
     public function edit(Request $request, $id)
     {
         $students= Student::find($id);
-        
-        $user_id = $students->id;
-        $courses = Student::find($user_id);
+
+        // $user_id = $students->id;
+        // $courses = Student::find($user_id);
         $data = Course::get();
         return view('partials.edit', Compact('students','data'));
-          // dd($courses->toArray());  
+          // dd($courses->toArray());
         // foreach($students as $student){
         //     $user_id = $students->id;
         //     // dd($user_id);
@@ -156,8 +176,8 @@ class StudentController extends Controller
         $users->phone = $request->get('phone');
         $users->update();
         foreach($users->courses as $course){
-         $course_id = $course->id;        
-         $obj = Course::find($course_id);
+        //  $course_id = $course->id;
+        //  $obj = Course::find($course_id);
          $courses = $request->get('courses');
          $courses_id= $courses;
          $users->courses()->sync($courses_id);
@@ -169,11 +189,11 @@ class StudentController extends Controller
         //     // $users->courses()->sync([$users->id]);
         //     // dd($obj->name->toArray());
         //     // $obj->update();
-        // // }         
+        // // }
         // }
         // if (empty($courses)){
         //     $users->courses()->detach($obj->id);
-        //  }     
+        //  }
         //  $courses->name = $course;
         //  $
         }
