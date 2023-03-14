@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class UserRequest extends FormRequest
 {
@@ -31,4 +33,12 @@ class UserRequest extends FormRequest
             'course' => 'required|min:1'
         ];
     }
+    // public function failedValidation(Validator $validator){
+    //     throw new HttpResponseException(response()->json([
+    //         'success'   => false,
+    //         'message'   => 'Validation errors',
+    //         'data'      => $validator->errors()
+    //     ]));
+
+    // }
 }

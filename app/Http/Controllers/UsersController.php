@@ -1,11 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
-
 use App\Http\Requests\UserRequest;
+use App\Events\SendMail;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\DB;
+use Event;
 
 class UsersController extends Controller
 {
@@ -16,8 +20,9 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users= User::all();
+        $users = User::all();
         return view('admin.users', compact('users'));
+        // return UserResource::collection($users);
     }
 
     /**
@@ -46,7 +51,7 @@ class UsersController extends Controller
         //             'phone' => 'required|string'
         //         ]
         //     );
-            // if($validator->fails()){}
+        // if($validator->fails()){}
 
         // $name= $request->get('name');
         // $email= $request->get('email');
@@ -59,10 +64,9 @@ class UsersController extends Controller
         // $users->address = $address;
         // $users->phone = $phone;
         // $users->save();
-    $data = $request->validated();
+        $data = $request->validated();
         User::create($data);
         return redirect('/users')->with('success', 'Record added Successfully');
-
     }
 
     /**
@@ -85,10 +89,9 @@ class UsersController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $users= User::find($id);
+        $users = User::find($id);
         $permissions = Permission::all();
         return view('admin.users_edit', compact('users', 'permissions'));
-
     }
 
     /**
@@ -100,7 +103,9 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $users= User::find($id);
+        $users = User::find($id);
+        $user_id = $users->id;
+        Event::dispatch(new SendMail($user_id));
         $permissions = $request->get('permission');
         $users->syncPermissions($permissions);
         $users->name = $request->get('name');
@@ -117,8 +122,10 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-      $user= User::find($id);
-      $user->delete();
-        return redirect(route('user.index'))->with('success','Delete user successfully');
+        DB::transaction(function () use ($id) {
+            $user = User::find($id);
+            $user->delete();
+            return redirect(route('user.index'))->with('success', 'Delete user successfully');
+        });
     }
 }
