@@ -29,6 +29,7 @@ class StudentController extends Controller
             return view('admin.student', compact('students', 'courses'));
         }
         return view('index', compact('students', 'courses'));
+        // return StudentResource::collection(Student::all());
         // $permissions[] = Permission::all();
         // dd($permissions->toArray());
         // $permissions = auth()->user()->hasAnyPermission(['view','create', 'delete', 'edit']);

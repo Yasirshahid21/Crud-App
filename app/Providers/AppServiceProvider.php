@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\User;
+use App\Observers\userObservers;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        view()->share('students', '$students', 'courses', '$courses');
+        // view()->share('students', '$students', 'courses', '$courses');
+        User::observe(userObservers::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,15 +21,40 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
-    protected $fillable =[
+    protected $fillable = [
         'name',
         'email',
-        'password'
+        'password',
+        'path'
     ];
     protected $primarykey = "id";
 
-    public function students(){
+    public function students()
+    {
         return $this->hasMany(Student::class);
+    }
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'author_id');
+    }
+    // public function posts() {
+    //     return $this->hasMany('App\Post');
+    // }
+    // /**
+    //  * Get the user's first name.
+    //  */
+    // protected function name(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn (string $value) => ucfirst($value),
+    //     );
+    // }
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
+        );
     }
 
     /**
